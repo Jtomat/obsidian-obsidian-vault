@@ -4,4 +4,4 @@ views:
     order:
       - file.name
       - file.backlinks
-      - file.fullname
+      - file.tags
