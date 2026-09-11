@@ -1,8 +1,6 @@
-from typing import Dict, Any
+from typing import Dict
 
 import torch
-
-
 
 
 class Context:
@@ -14,5 +12,3 @@ class Context:
     def set_declaration(self, declaration: "Declaration") -> None:
         self.declarations[declaration.name] = declaration
 
-class ComputedNode(Node):
-    def eval(self, context: Context) -> Any:
