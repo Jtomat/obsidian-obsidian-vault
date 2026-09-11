@@ -1,7 +1,7 @@
 import torch
 
-from code.core.context import Context
-from code.core.node import Node
+from code.ast_tree.context import Context
+from code.ast_tree.node import Node
 
 
 # Вычисляемый элемент

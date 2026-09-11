@@ -2,8 +2,8 @@ from typing import Optional
 
 import torch
 
-from code.core.context import Context
-from code.core.expression import Expression
+from code.ast_tree.context import Context
+from code.ast_tree.expression import Expression
 
 
 class ReferenceNode(Expression):
