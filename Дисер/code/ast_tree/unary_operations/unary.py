@@ -1,7 +1,9 @@
-from code.ast_tree.expression import Expression
-from typing import TypeVar, Generic
+from enum import Enum
 
-T = TypeVar('T')
+from code.ast_tree.expression import Expression
+from typing import TypeVar, Generic, SupportsAbs
+
+T = TypeVar('T', bound=SupportsAbs[Enum])
 
 class UnaryOperation(Expression, Generic[T]):
     operator: T
