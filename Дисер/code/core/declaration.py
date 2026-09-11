@@ -1,6 +1,8 @@
 from code.core.context import Context
 from code.core.expression import Expression
 from code.core.node import Node
+from code.core.reference import ReferenceNode
+
 
 # Запись значения в контекст по имени
 class Declaration(Node):
