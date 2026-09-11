@@ -7,7 +7,7 @@ from code.ast_tree.context import Context
 from code.ast_tree.expression import Expression
 
 
-class UnaryOperation(Enum):
+class UnaryMathOperation(Enum):
     Negate = "negate"
     Abs = "abs"
     Sqrt = "sqrt"
@@ -23,23 +23,23 @@ class UnaryOperation(Enum):
 import math
 
 UNARY_OPERATORS_FUNCS = {
-    UnaryOperation.Negate: (torch.neg, lambda x: -x),
-    UnaryOperation.Abs: (torch.abs, abs),
-    UnaryOperation.Sqrt: (torch.sqrt, math.sqrt),
-    UnaryOperation.Sin: (torch.sin, math.sin),
-    UnaryOperation.Cos: (torch.cos, math.cos),
-    UnaryOperation.Tan: (torch.tan, math.tan),
-    UnaryOperation.Exp: (torch.exp, math.exp),
-    UnaryOperation.Log: (torch.log, math.log),
-    UnaryOperation.Floor: (torch.floor, math.floor),
-    UnaryOperation.Ceil: (torch.ceil, math.ceil),
+    UnaryMathOperation.Negate: (torch.neg, lambda x: -x),
+    UnaryMathOperation.Abs: (torch.abs, abs),
+    UnaryMathOperation.Sqrt: (torch.sqrt, math.sqrt),
+    UnaryMathOperation.Sin: (torch.sin, math.sin),
+    UnaryMathOperation.Cos: (torch.cos, math.cos),
+    UnaryMathOperation.Tan: (torch.tan, math.tan),
+    UnaryMathOperation.Exp: (torch.exp, math.exp),
+    UnaryMathOperation.Log: (torch.log, math.log),
+    UnaryMathOperation.Floor: (torch.floor, math.floor),
+    UnaryMathOperation.Ceil: (torch.ceil, math.ceil),
 }
 
 
 class UnaryMathOperationNode(Expression):
     type: str = 'unary_math_operation'
 
-    operator: UnaryOperation
+    operator: UnaryMathOperation
     operand: Expression
 
     def eval(self, context: Context, local: Optional[Context] = None) -> int | float | torch.tensor:
