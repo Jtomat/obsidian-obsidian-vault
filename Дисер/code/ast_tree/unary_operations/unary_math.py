@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional
+from typing import Optional, Dict
 
 import torch
 
@@ -22,7 +22,7 @@ class UnaryMathOperation(Enum):
 
 import math
 
-UNARY_OPERATORS_FUNCS = {
+UNARY_OPERATORS_FUNCS: Dict[Enum, (callable, callable)] = {
     UnaryMathOperation.Negate: (torch.neg, lambda x: -x),
     UnaryMathOperation.Abs: (torch.abs, abs),
     UnaryMathOperation.Sqrt: (torch.sqrt, math.sqrt),
