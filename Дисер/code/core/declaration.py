@@ -9,3 +9,14 @@ class Declaration(Node):
 
     def eval(self, context: Context) -> None:
         context.set_declaration(self)
+
+
+class VariableDeclaration(Declaration):
+    type: str = 'variable_declaration'
+
+
+class FunctionDeclaration(Declaration):
+    type: str = 'function_declaration'
+
+    arguments: list[ReferenceNode]
+    exec: Expression
