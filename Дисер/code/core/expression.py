@@ -1,4 +1,5 @@
-from code.
+from code.core.node import Node
+
 
 # Вычисляемый элемент
 class Expression(Node):
