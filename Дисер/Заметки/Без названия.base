@@ -1,0 +1,6 @@
+views:
+  - type: cards
+    name: Таблица
+    order:
+      - file.name
+      - file.backlinks
