@@ -11,4 +11,3 @@ class Context:
 
     def set_declaration(self, declaration: "Declaration") -> None:
         self.declarations[declaration.name] = declaration
-
