@@ -3,8 +3,7 @@ from typing import TypeVar, Generic
 
 T = TypeVar('T')
 
-class UnaryMathOperationNode(Expression, Generic[T]):
+class UnaryOperation(Expression, Generic[T]):
     operator: T
     operand: Expression
 
-    
