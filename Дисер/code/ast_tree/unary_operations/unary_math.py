@@ -1,10 +1,11 @@
+import math
 from enum import Enum
 from typing import Optional, Dict
-import math
+
 import torch
 
 from code.ast_tree.context import Context
-from code.ast_tree.expression import Expression
+from code.ast_tree.unary_operations.unary import UnaryOperation
 
 
 class UnaryMathOperation(Enum):
@@ -35,14 +36,12 @@ UNARY_OPERATORS_FUNCS: Dict[Enum, (callable, callable)] = {
 }
 
 
-class UnaryMathOperationNode(Expression):
+class UnaryMathOperationNode(UnaryOperation[UnaryMathOperation]):
     type: str = 'unary_math_operation'
-
-    operator: UnaryMathOperation
-    operand: Expression
 
     def eval(self, context: Context, local: Optional[Context] = None) -> int | float | torch.tensor:
         base_val = self.operand.eval(context)
+
         to_exec = UNARY_OPERATORS_FUNCS[self.operator][int(not torch.is_tensor(base_val))]
 
         return to_exec(base_val)
