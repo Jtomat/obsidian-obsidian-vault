@@ -1,6 +1,6 @@
 from enum import Enum
 from typing import Optional, Dict
-
+import math
 import torch
 
 from code.ast_tree.context import Context
@@ -20,7 +20,6 @@ class UnaryMathOperation(Enum):
     Ceil = "ceil"
 
 
-import math
 
 UNARY_OPERATORS_FUNCS: Dict[Enum, (callable, callable)] = {
     UnaryMathOperation.Negate: (torch.neg, lambda x: -x),
