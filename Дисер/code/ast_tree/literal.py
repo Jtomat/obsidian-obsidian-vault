@@ -1,13 +1,13 @@
 import torch
 
-from code.ast_tree.context import Context
-from code.ast_tree.expression import Expression
+from code.ast_tree.core.context import Context
+from code.ast_tree.core.expression import Expression
 
 
 class LiteralNode(Expression):
     type: str = 'literal'
 
-    value: int | float
+    value: bool | float
 
-    def eval(self, context: Context) -> int | float | torch.tensor:
+    def eval(self, context: Context) -> bool | float | torch.tensor:
         return context
