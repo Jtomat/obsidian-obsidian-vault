@@ -2,6 +2,8 @@ import operator
 from enum import Enum
 from typing import Optional
 
+import torch
+
 from code.ast_tree.binary_operations.binary import BinaryOperation
 from code.ast_tree.core.context import Context
 
@@ -25,10 +27,10 @@ COMPARISON_OPERATORS_FUNCS = {
 }
 
 
-class ComparisonNode(BinaryOperation[BinaryComparisonOperation]):
+class BinaryComparisonNode(BinaryOperation[BinaryComparisonOperation]):
     type: str = "binary_comparison"
 
-    def eval(self, context: Context, local: Optional[Context] = None) -> bool:
+    def eval(self, context: Context, local: Optional[Context] = None) -> bool | torch.tensor:
         left = self.left.eval(context)
         right = self.right.eval(context)
 

@@ -1,5 +1,6 @@
 import operator
 from enum import Enum
+from typing import Optional
 
 import torch
 
@@ -21,7 +22,7 @@ class BinaryLogicalOperationNode(BinaryOperation[BinaryLogicalOperator]):
     type: str = "logical_operation"
 
 
-    def eval(self, context: Context) -> bool | float | torch.tensor:
+    def eval(self, context: Context, local: Optional[Context]=None) -> bool | float | torch.tensor:
         left = self.left.eval(context)
         right = self.right.eval(context)
 

@@ -1,6 +1,6 @@
 import torch
 from typing import Dict
-from code.ast_tree.declaration import Declaration
+from code.ast_tree.declaration.declaration import Declaration
 
 
 class Context:
