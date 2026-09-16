@@ -1,10 +1,12 @@
 from dataclasses import dataclass
 from enum import Enum
 
-import torch
+from torch import Tensor
+
+from code.ast_tree.ast_tree_factory import AstTreeFactory
 from code.ast_tree.core.context import Context
 from code.ast_tree.core.expression import Expression
-from typing import TypeVar, SupportsAbs, Optional
+from typing import TypeVar, SupportsAbs, Optional, Dict, Any
 
 from code.ast_tree.core.operation import Operation
 
@@ -15,7 +17,12 @@ T = TypeVar('T', bound=SupportsAbs[Enum])
 class UnaryOperation(Operation[T]):
     operand: Expression
 
-    def eval(self, context: Context, local: Optional[Context] = None) -> bool | float | torch.tensor:
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any], builder: AstTreeFactory) -> 'UnaryOperation':
+        return UnaryOperation(operator=cls.__enum__(data['operator']), operand=builder.build(data['operand']))
+
+
+    def eval(self, context: Context, local: Optional[Context] = None) -> bool | float | Tensor:
         run_time = context.merge_with(local)
 
         value = self.operand.eval(run_time)

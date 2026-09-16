@@ -1,10 +1,12 @@
 import operator
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
+from typing import Optional, ClassVar, Any, Dict
 
 import torch
+from torch import Tensor
 
+from code.ast_tree.ast_tree_factory import AstTreeFactory
 from code.ast_tree.binary_operations.binary import BinaryOperation
 from code.ast_tree.core.context import Context
 
@@ -29,9 +31,14 @@ COMPARISON_OPERATORS_FUNCS = {
 
 @dataclass
 class BinaryComparisonNode(BinaryOperation[BinaryComparisonOperation]):
-    type: str = "binary_comparison"
+    type: ClassVar[str]  = "binary_comparison"
+    __enum__: ClassVar[Enum] = BinaryComparisonOperation
 
-    def eval(self, context: Context, local: Optional[Context] = None) -> bool | torch.tensor:
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any], builder: AstTreeFactory) -> 'BinaryComparisonNode':
+        return super().from_dict(data, builder)
+
+    def eval(self, context: Context, local: Optional[Context] = None) -> bool | Tensor:
         left = self.left.eval(context)
         right = self.right.eval(context)
 

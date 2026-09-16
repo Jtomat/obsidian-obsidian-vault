@@ -1,15 +1,13 @@
-from typing import Dict, Callable
-
-from code.ast_tree.core.node import Node
+from typing import Dict, Callable, Any
 
 
 class AstTreeFactory:
     types = {}
 
     @classmethod
-    def register(cls, type: str, exec: Callable[[Dict, 'AstTreeFactory'], Node]):
-        cls.types[type] = exec
+    def register(cls, key: str, builder: Callable[[Dict, 'AstTreeFactory'], Any]):
+        cls.types[key] = builder
 
     @classmethod
-    def build(cls, obj: Dict) -> Node:
+    def build(cls, obj: Dict) -> Any:
         return cls.types[obj['type']](obj, cls)

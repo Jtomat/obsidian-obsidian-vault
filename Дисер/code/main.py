@@ -1,18 +1,26 @@
-from code.ast_tree.binary_operations.binary_math import BinaryMathOperation
-from code.ast_tree.core.context import Context
-from code.ast_tree.ast_tree_factory import AstTreeFactory
+from code.ast_tree import Context, AstTreeFactory
 
+context = Context()
 
-print(AstTreeFactory.types)
-print(AstTreeFactory.build({
-    "type": 'binary_math_operation',
-    "operator": 'add',
-    'left': {
-        "type": 'literal',
-        'value': 1,
-    },
-    "right": {
-        "type": 'literal',
-        'value': 2,
+AstTreeFactory.build({ 'type': 'variable_declaration',
+                       'name': 'a',
+                       'value': { 'type': 'literal', 'value': 5 }
+                       }).eval(context)
+
+AstTreeFactory.build({
+    'type': 'variable_declaration',
+    'name': 'b',
+    'value': {
+        "type": 'binary_math_operation',
+        'operator': 'pow',
+        'left': { 'type': 'reference', 'name': 'a' },
+        'right': { 'type': 'literal', 'value': 2, }
     }
-}).eval(Context()))
+}).eval(context)
+
+print(AstTreeFactory.build({
+    "type": 'binary_logical_operation',
+    "operator": 'and',
+    'left': { "type": 'literal', 'value': 1, },
+    "right": { "type": 'reference', 'name': 'b', }
+}).eval(context))

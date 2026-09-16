@@ -1,5 +1,6 @@
 import math
 from enum import Enum
+from typing import ClassVar
 
 import torch
 
@@ -35,6 +36,6 @@ UNARY_OPERATORS_FUNCS = {
 
 
 class UnaryMathOperationNode(UnaryOperation[UnaryMathOperation]):
-    type: str = 'unary_math_operation'
-
+    type: ClassVar[str]  = 'unary_math_operation'
+    __enum__: ClassVar[Enum] = UnaryMathOperation
     _operations_dict = UNARY_OPERATORS_FUNCS

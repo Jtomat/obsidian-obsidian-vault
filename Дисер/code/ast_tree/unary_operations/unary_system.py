@@ -1,7 +1,8 @@
 from enum import Enum
-from typing import Optional, Dict, Callable, Tuple
+from typing import Optional, Dict, Callable, Tuple, ClassVar
 
 import torch
+from torch import Tensor
 
 from code.ast_tree.core.context import Context
 from code.ast_tree.unary_operations.unary import UnaryOperation
@@ -20,9 +21,10 @@ UNARY_OPERATORS_FUNCS: Dict[Enum, Tuple[Callable, Callable]] = {
 
 
 class UnarySystemOperationNode(UnaryOperation[UnarySystemOperation]):
-    type: str = 'unary_system_operation'
+    type: ClassVar[str]  = 'unary_system_operation'
+    __enum__: ClassVar[Enum] = UnarySystemOperation
 
-    def eval(self, context: Context, local: Optional[Context] = None) -> bool | float | torch.tensor:
+    def eval(self, context: Context, local: Optional[Context] = None) -> bool | float | Tensor:
         run_time = context.merge_with(local)
         base_val = self.operand.eval(run_time)
 

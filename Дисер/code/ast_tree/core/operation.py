@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import TypeVar, Generic, SupportsAbs, Dict, Callable, get_origin, get_args
+from typing import TypeVar, Generic, SupportsAbs, Dict, Callable, get_origin, get_args, ClassVar
 
 from code.ast_tree.core.expression import Expression
 
@@ -14,16 +14,7 @@ class CallableOperation:
 
 @dataclass
 class Operation(Expression, Generic[T]):
-    __enum__ = TypeVar('__enum__', bound=Enum)
     operator: T
+    __enum__: ClassVar[type[Enum]]
+    _operations_dict: ClassVar[Dict[T, CallableOperation]]
 
-    def __init_subclass__(cls, **kwargs):
-        super().__init_subclass__(**kwargs)
-
-        for base in getattr(cls, "__orig_bases__", ()):
-            if get_origin(base) is Operation:
-                enum_type = get_args(base)[0]
-                cls.__enum__ = enum_type
-                break
-
-    _operations_dict: Dict[T, CallableOperation]

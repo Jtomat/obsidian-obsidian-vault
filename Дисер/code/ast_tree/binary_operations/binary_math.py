@@ -1,9 +1,10 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional, Dict, Callable, Tuple
+from typing import Optional, Dict, Callable, Tuple, ClassVar, Any
 
 import torch
 
+from code.ast_tree.ast_tree_factory import AstTreeFactory
 from code.ast_tree.binary_operations.binary import BinaryOperation
 from code.ast_tree.core.context import Context
 
@@ -34,11 +35,17 @@ BINARY_OPERATORS_FUNCS: Dict[Enum, Tuple[Callable, Callable]] = {
 
 @dataclass
 class BinaryMathOperationNode(BinaryOperation[BinaryMathOperation]):
-    type: str = "binary_math_operation"
+    type: ClassVar[str] = "binary_math_operation"
+    __enum__: ClassVar[Enum] = BinaryMathOperation
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any], builder: AstTreeFactory) -> 'BinaryMathOperationNode':
+        return super().from_dict(data, builder)
 
     def eval(self, context: Context, local: Optional[Context] = None):
         left = self.left.eval(context)
-        right = self.left.eval(context)
+        right = self.right.eval(context)
+
 
         has_tensor = bool(not (torch.is_tensor(left) or torch.is_tensor(right)))
 

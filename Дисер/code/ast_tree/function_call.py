@@ -1,11 +1,13 @@
 from dataclasses import dataclass
-from typing import Optional, Dict, Unpack
+from typing import Optional, Dict, Unpack, ClassVar, Any
 
 import torch
+from functorch.dim import Tensor
 from pydantic import ConfigDict
 
 from code.ast_tree.core.context import Context
 from code.ast_tree.core.expression import Expression
+from code.ast_tree.core.node import Node
 from code.ast_tree.declaration.variable_declaration import VariableDeclaration
 from code.ast_tree.literal import LiteralNode
 from code.ast_tree.ast_tree_factory import AstTreeFactory
@@ -17,16 +19,20 @@ class FunctionCallNode(Expression):
     name: str
     arguments: Dict[str, Expression]
 
-    type: str = 'function_call'
+    type: ClassVar[str]  = 'function_call'
 
-    def __init_subclass__(cls, **kwargs: Unpack[ConfigDict]):
-        super().__init_subclass__(**kwargs)
-        AstTreeFactory.register(cls.type, lambda data, builder: build_function_call(data, builder))
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any], builder: AstTreeFactory) -> 'FunctionCallNode':
+        args = {}
 
-    def eval(self, context: Context, local: Optional[Context] = None) -> bool | float | torch.tensor:
+        for key, value in data['arguments']:
+            args[key] = builder.build(value)
+        return FunctionCallNode(name=data['name'], arguments=args)
+
+    def eval(self, context: Context, local: Optional[Context] = None) -> bool | float | Tensor:
         run_time = context.merge_with(local)
 
-        func = run_time.get_function(self.name)
+        func = run_time.get_declaration(self.name)
 
         if func is not None:
             eval_context = Context()
@@ -39,10 +45,3 @@ class FunctionCallNode(Expression):
             return func.value.eval(run_time.merge_with(eval_context))
 
         raise AttributeError(f'Function with name "{self.name}" not found in runtime context."')
-
-
-def build_function_call(data: dict, builder: AstTreeFactory) -> FunctionCallNode:
-    args = {}
-    for key, value in data['arguments']:
-        args[key] = builder.build(value)
-    return FunctionCallNode(name=data['name'], arguments=args, type=data['type'])

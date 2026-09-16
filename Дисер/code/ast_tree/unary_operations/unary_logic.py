@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Unpack
+from typing import Unpack, ClassVar
 
 import torch
 from pydantic import ConfigDict
@@ -21,8 +21,9 @@ UNARY_OPERATORS_FUNCS = {
 
 
 class UnaryLogicOperationNode(UnaryOperation[UnaryLogicOperation]):
-    type: str = 'unary_logic_operation'
+    type: ClassVar[str]  = 'unary_logic_operation'
     _operations_dict = UNARY_OPERATORS_FUNCS
+    __enum__: ClassVar[Enum] = UnaryLogicOperation
 
 
     def __init_subclass__(cls, **kwargs: Unpack[ConfigDict]):

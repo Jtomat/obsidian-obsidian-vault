@@ -1,9 +1,11 @@
 import torch
 from typing import Dict, Any
 
+from torch import Tensor
+
 
 class Context:
-    declarations: Dict[str, Any]
+    declarations: Dict[str, Any] = {}
 
 
     def setup(self, declarations: Dict[str, Any]) -> "Context":
@@ -13,15 +15,7 @@ class Context:
     def get_declaration(self, name: str):
         return self.declarations[name]
 
-    def get_function(self, name: str) -> Any | None:
-        func = self.declarations[name]
-
-        if 'declaration' in func.type:
-            return func
-
-        return None
-
-    def calc(self, name: str) -> bool | float | torch.Tensor:
+    def calc(self, name: str) -> bool | float | Tensor:
         return self.declarations[name].value.eval(self)
 
     def set_declaration(self, declaration: Any) -> None:
