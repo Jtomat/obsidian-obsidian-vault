@@ -1,9 +1,11 @@
 from enum import Enum
-from typing import Optional, Dict, Callable, Tuple
+from typing import Unpack
 
 import torch
+from pydantic import ConfigDict
 
-from code.ast_tree.core.context import Context
+from code.ast_tree.core.operation import CallableOperation
+from code.ast_tree.ast_tree_factory import AstTreeFactory
 from code.ast_tree.unary_operations.unary import UnaryOperation
 
 
@@ -12,19 +14,19 @@ class UnaryLogicOperation(Enum):
     Cast = "cast"
 
 
-
-UNARY_OPERATORS_FUNCS: Dict[Enum, Tuple[Callable, Callable]] = {
-    UnaryLogicOperation.Not: (lambda value: not value, torch.logical_not),
-    UnaryLogicOperation.Cast: (bool, torch.Tensor.bool),
+UNARY_OPERATORS_FUNCS = {
+    UnaryLogicOperation.Not: CallableOperation(scalar=lambda value: not value, tensor=torch.logical_not),
+    UnaryLogicOperation.Cast: CallableOperation(scalar=bool, tensor=torch.Tensor.bool),
 }
 
 
 class UnaryLogicOperationNode(UnaryOperation[UnaryLogicOperation]):
     type: str = 'unary_logic_operation'
+    _operations_dict = UNARY_OPERATORS_FUNCS
 
-    def eval(self, context: Context, local: Optional[Context] = None) -> bool | float | torch.tensor:
-        base_val = self.operand.eval(context)
 
-        to_exec = UNARY_OPERATORS_FUNCS[self.operator][bool(not torch.is_tensor(base_val))]
-
-        return to_exec(base_val)
+    def __init_subclass__(cls, **kwargs: Unpack[ConfigDict]):
+        super().__init_subclass__(**kwargs)
+        AstTreeFactory.register(cls.type, lambda data, builder:
+        UnaryLogicOperationNode(type=data['type'], operator=cls.__enum__(data['operator']),
+                                operand=builder.build(data['operand'])))

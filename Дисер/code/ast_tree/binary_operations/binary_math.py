@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from enum import Enum
 from typing import Optional, Dict, Callable, Tuple
 
@@ -31,11 +32,11 @@ BINARY_OPERATORS_FUNCS: Dict[Enum, Tuple[Callable, Callable]] = {
     BinaryMathOperation.Max: (torch.maximum, max),
 }
 
-
-class BinaryOperationNode(BinaryOperation[BinaryMathOperation]):
+@dataclass
+class BinaryMathOperationNode(BinaryOperation[BinaryMathOperation]):
     type: str = "binary_math_operation"
 
-    def eval(self, context: Context, local: Optional[Context] = None) -> bool | float | torch.tensor:
+    def eval(self, context: Context, local: Optional[Context] = None):
         left = self.left.eval(context)
         right = self.left.eval(context)
 

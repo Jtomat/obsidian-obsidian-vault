@@ -1,13 +1,22 @@
+from dataclasses import dataclass
+from typing import Optional, Unpack
+
 import torch
+from pydantic import ConfigDict
 
 from code.ast_tree.core.context import Context
 from code.ast_tree.core.expression import Expression
+from code.ast_tree.ast_tree_factory import AstTreeFactory
 
 
+@dataclass
 class LiteralNode(Expression):
+    value: bool | float| torch.tensor
     type: str = 'literal'
 
-    value: bool | float
+    def __init_subclass__(cls, **kwargs: Unpack[ConfigDict]):
+        super().__init_subclass__(**kwargs)
+        AstTreeFactory.register(cls.type, lambda data, builder: LiteralNode(value=data['value'], type=data['type']))
 
-    def eval(self, context: Context) -> bool | float | torch.tensor:
-        return context
+    def eval(self, context: Context, local: Optional[Context] = None) -> bool | float | torch.tensor:
+        return self.value

@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from pydantic import BaseModel
+from dataclasses import dataclass
 
-class Node(BaseModel):
+
+@dataclass
+class Node:
     type: str
-

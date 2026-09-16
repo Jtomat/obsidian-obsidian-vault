@@ -1,4 +1,5 @@
 import operator
+from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
@@ -17,7 +18,7 @@ BINARY_LOGICAL_FUNCS = {
     BinaryLogicalOperator.Or: operator.or_,
 }
 
-
+@dataclass
 class BinaryLogicalOperationNode(BinaryOperation[BinaryLogicalOperator]):
     type: str = "logical_operation"
 

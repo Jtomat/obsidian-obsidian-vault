@@ -1,4 +1,5 @@
 import operator
+from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
@@ -26,7 +27,7 @@ COMPARISON_OPERATORS_FUNCS = {
     BinaryComparisonOperation.Greater_Equal: operator.ge,
 }
 
-
+@dataclass
 class BinaryComparisonNode(BinaryOperation[BinaryComparisonOperation]):
     type: str = "binary_comparison"
 

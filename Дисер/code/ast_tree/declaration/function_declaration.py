@@ -1,10 +1,8 @@
-from code.ast_tree.core.expression import Expression
+from dataclasses import dataclass
+
 from code.ast_tree.declaration.declaration import Declaration
-from code.ast_tree.reference import ReferenceNode
 
-
+@dataclass
 class FunctionDeclaration(Declaration):
+    arguments: list[str]
     type: str = 'function_declaration'
-
-    arguments: list[ReferenceNode]
-    exec: Expression
