@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import ClassVar, Dict, Any
 
 from code.ast_tree.ast_tree_factory import AstTreeFactory
-from code.ast_tree.declaration.declaration import Declaration
+from code.ast_tree.core.declaration import Declaration
 
 
 @dataclass

@@ -13,3 +13,5 @@ from code.ast_tree.unary_operations.unary_logic import UnaryLogicOperationNode
 from code.ast_tree.unary_operations.unary_math import UnaryMathOperationNode
 from code.ast_tree.unary_operations.unary_system import UnarySystemOperationNode
 from code.ast_tree.reference import ReferenceNode
+from code.ast_tree.core.declaration import Declaration
+from code.ast_tree.core.operation import Operation

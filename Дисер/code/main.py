@@ -2,12 +2,12 @@ from code.ast_tree import Context, AstTreeFactory
 
 context = Context()
 
-AstTreeFactory.build({ 'type': 'variable_declaration',
+declare_a = AstTreeFactory.build({ 'type': 'variable_declaration',
                        'name': 'a',
                        'value': { 'type': 'literal', 'value': 5 }
-                       }).eval(context)
+                       })
 
-AstTreeFactory.build({
+declare_b = AstTreeFactory.build({
     'type': 'variable_declaration',
     'name': 'b',
     'value': {
@@ -16,11 +16,15 @@ AstTreeFactory.build({
         'left': { 'type': 'reference', 'name': 'a' },
         'right': { 'type': 'literal', 'value': 2, }
     }
-}).eval(context)
+})
 
-print(AstTreeFactory.build({
+operation = AstTreeFactory.build({
     "type": 'binary_logical_operation',
     "operator": 'and',
     'left': { "type": 'literal', 'value': 1, },
     "right": { "type": 'reference', 'name': 'b', }
-}).eval(context))
+})
+
+declare_a.eval(context)
+declare_b.eval(context)
+print(operation.eval(context))

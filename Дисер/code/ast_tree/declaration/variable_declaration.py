@@ -1,10 +1,8 @@
 from dataclasses import dataclass
-from typing import ClassVar, Unpack, Any, Dict
-
-from pydantic import ConfigDict
+from typing import ClassVar, Any, Dict
 
 from code.ast_tree.ast_tree_factory import AstTreeFactory
-from code.ast_tree.declaration.declaration import Declaration
+from code.ast_tree.core.declaration import Declaration
 
 @dataclass
 class VariableDeclaration(Declaration):
