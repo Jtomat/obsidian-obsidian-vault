@@ -1,8 +1,8 @@
 from pathlib import Path
 from typing import List, Any
 
-from code.backend.models.resource import Resource
-from code.backend.models.stage import Stage
+from code.logic.models.resources.resource import Resource
+from code.logic.models.stage import Stage
 
 
 class Project:
